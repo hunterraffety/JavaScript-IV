@@ -1,20 +1,4 @@
-/* 
-
-Prototype Refactor
-
-1. Copy and paste your code or the solution from yesterday
-
-2. Your goal is to refactor all of this code to use ES6 Classes. The console.log() statements should still return what is expected of them.
-
-*/
-
 'use strict';
-
-// function GameObject(charAttrs) {
-//   this.createdAt = charAttrs.createdAt;
-//   this.name = charAttrs.name;
-//   this.dimensions = charAttrs.dimensions;
-// }
 
 class GameObject {
   constructor(attrs) {
@@ -27,29 +11,6 @@ class GameObject {
   }
 }
 
-// creating the detroy() method and attaching to prototype
-// GameObject.prototype.destroy = function() {
-//   return `${this.name} was removed from the game. :( Pwned.`;
-// };
-
-/*
-  === CharacterStats ===
-  * healthPoints
-  * takeDamage() // prototype method -> returns the string '<object name> took damage.'
-  * should inherit destroy() from GameObject's prototype
-*/
-
-// function CharacterStats(statsAttrs) {
-//   GameObject.call(this, statsAttrs); /* this calls down props and maps them? */
-//   this.healthPoints = statsAttrs.healthPoints;
-// }
-
-// // inhertance of GameObject properties.
-// CharacterStats.prototype = Object.create(GameObject.prototype);
-// // Creating .takeDamage() method and attachign to prototype.
-// CharacterStats.prototype.takeDamage = function takeDamage() {
-//   return `${this.name} took damage!!!`;
-// };
 class CharacterStats extends GameObject {
   constructor(attrs) {
     super(attrs);
@@ -59,22 +20,6 @@ class CharacterStats extends GameObject {
     return `${this.name} took damage!!!`;
   }
 }
-/*
-  === Humanoid (Having an appearance or character resembling that of a human.) ===
-  * team
-  * weapons
-  * language
-  * greet() // prototype method -> returns the string '<object name> offers a greeting in <object language>.'
-  * should inherit destroy() from GameObject through CharacterStats
-  * should inherit takeDamage() from CharacterStats
-*/
-
-// function Humanoid(infoAttrs) {
-//   CharacterStats.call(this, infoAttrs); /* same note */
-//   this.team = infoAttrs.team;
-//   this.weapons = infoAttrs.weapons;
-//   this.language = infoAttrs.language;
-// }
 
 class Humanoid extends CharacterStats {
   constructor(attrs) {

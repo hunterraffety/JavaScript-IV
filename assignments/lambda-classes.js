@@ -96,9 +96,9 @@ const testPm = new ProjectManager({
   location: 'Salt Lake City, Utah',
   gradClassName: 'FS101',
   favInstructor: 'Dan',
-  specialty: 'Full Stack Web Development',
-  favLanguage: 'JavaScript',
-  catchPhrase: 'Hey now!'
+  specialty: 'Extra Full Stack Web Development',
+  favLanguage: 'JavaScript/React',
+  catchPhrase: 'Hey now 2!'
 });
 
 console.log(testInstructor);

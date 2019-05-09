@@ -10,16 +10,27 @@ Prototype Refactor
 
 'use strict';
 
-function GameObject(charAttrs) {
-  this.createdAt = charAttrs.createdAt;
-  this.name = charAttrs.name;
-  this.dimensions = charAttrs.dimensions;
+// function GameObject(charAttrs) {
+//   this.createdAt = charAttrs.createdAt;
+//   this.name = charAttrs.name;
+//   this.dimensions = charAttrs.dimensions;
+// }
+
+class GameObject {
+  constructor(attrs) {
+    this.createdAt = attrs.createdAt;
+    this.name = attrs.name;
+    this.dimensions = attrs.dimensions;
+  }
+  destroy() {
+    return `${this.name} was removed from the game. :( Pwned!`;
+  }
 }
 
 // creating the detroy() method and attaching to prototype
-GameObject.prototype.destroy = function() {
-  return `${this.name} was removed from the game. :( Pwned.`;
-};
+// GameObject.prototype.destroy = function() {
+//   return `${this.name} was removed from the game. :( Pwned.`;
+// };
 
 /*
   === CharacterStats ===
@@ -28,18 +39,26 @@ GameObject.prototype.destroy = function() {
   * should inherit destroy() from GameObject's prototype
 */
 
-function CharacterStats(statsAttrs) {
-  GameObject.call(this, statsAttrs); /* this calls down props and maps them? */
-  this.healthPoints = statsAttrs.healthPoints;
+// function CharacterStats(statsAttrs) {
+//   GameObject.call(this, statsAttrs); /* this calls down props and maps them? */
+//   this.healthPoints = statsAttrs.healthPoints;
+// }
+
+// // inhertance of GameObject properties.
+// CharacterStats.prototype = Object.create(GameObject.prototype);
+// // Creating .takeDamage() method and attachign to prototype.
+// CharacterStats.prototype.takeDamage = function takeDamage() {
+//   return `${this.name} took damage!!!`;
+// };
+class CharacterStats extends GameObject {
+  constructor(attrs) {
+    super(attrs);
+    this.healthPoints = attrs.healthPoints;
+  }
+  takeDamage() {
+    return `${this.name} took damage!!!`;
+  }
 }
-
-// inhertance of GameObject properties.
-CharacterStats.prototype = Object.create(GameObject.prototype);
-// Creating .takeDamage() method and attachign to prototype.
-CharacterStats.prototype.takeDamage = function takeDamage() {
-  return `${this.name} took damage!!!`;
-};
-
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
@@ -50,30 +69,24 @@ CharacterStats.prototype.takeDamage = function takeDamage() {
   * should inherit takeDamage() from CharacterStats
 */
 
-function Humanoid(infoAttrs) {
-  CharacterStats.call(this, infoAttrs); /* same note */
-  this.team = infoAttrs.team;
-  this.weapons = infoAttrs.weapons;
-  this.language = infoAttrs.language;
+// function Humanoid(infoAttrs) {
+//   CharacterStats.call(this, infoAttrs); /* same note */
+//   this.team = infoAttrs.team;
+//   this.weapons = infoAttrs.weapons;
+//   this.language = infoAttrs.language;
+// }
+
+class Humanoid extends CharacterStats {
+  constructor(attrs) {
+    super(attrs);
+    this.team = attrs.team;
+    this.weapons = attrs.weapons;
+    this.language = attrs.language;
+  }
+  greet() {
+    return `${this.name} offers an enthusiastic greeting in ${this.language}!`;
+  }
 }
-
-// Inherting from CharacterStats
-Humanoid.prototype = Object.create(CharacterStats.prototype);
-// Creating the greet() method and attaching it to the prototype
-Humanoid.prototype.greet = function() {
-  return `${this.name} offers an enthusiastic greeting in ${this.language}!`;
-};
-Humanoid.prototype.attack = function() {
-  return Math.floor(Math.random() * Math.floor(25));
-};
-
-/*
- * Inheritance chain: GameObject -> CharacterStats -> Humanoid
- * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
- * Instances of CharacterStats should have all of the same properties as GameObject.
- */
-
-// Test you work by un-commenting these 3 objects and the list of console logs below:
 
 const mage = new Humanoid({
   createdAt: new Date(),
@@ -131,67 +144,5 @@ console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 // Stretch task:
 // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
-function Villain(villainAttrs) {
-  Humanoid.call(this, villainAttrs);
-  this.name = villainAttrs.name;
-}
-
-function Hero(heroAttrs) {
-  Humanoid.call(this, heroAttrs);
-  this.name = heroAttrs.name;
-}
-
-const villain = new Villain({
-  createdAt: new Date(),
-  dimensions: {
-    length: 3,
-    width: 25,
-    height: 44
-  },
-  healthPoints: 100,
-  name: 'Beavis',
-  team: 'Burger World',
-  weapons: ['Useless Spatula'],
-  language: 'Gibberish'
-});
-
-const hero = new Hero({
-  createdAt: new Date(),
-  dimensions: {
-    length: 3,
-    width: 25,
-    height: 44
-  },
-  healthPoints: 60,
-  name: 'Charlie Sheen',
-  team: 'Team #Winning',
-  weapons: ['Terrible Sword of Destruction'],
-  language: 'Tigrese'
-});
-
-Villain.prototype.subtractHealth = function() {
-  if (this.healthPoints <= 0) {
-    return `You're done dude! You lose!`;
-  } else {
-    return `You're alive and well, fight on sir!`;
-  }
-};
-
-Hero.prototype.takeDmg = function() {
-  if (this.healthPoints <= 0) {
-    return `You're done dude! You lose!`;
-  } else {
-    return `You're alive and well, fight on sir!`;
-  }
-};
-
-// console.log(villain.attack());
-
-console.log(villain);
-console.log(villain.subtractHealth());
-
-console.log(hero);
-console.log(hero.takeDmg());
-// console.log(hero.subtractHealth());
 // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
 // * Create two new objects, one a villain and one a hero and fight it out with methods!
